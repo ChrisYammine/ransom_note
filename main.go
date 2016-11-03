@@ -3,7 +3,6 @@ import (
   "fmt"
   "bufio"
   "os"
-  "strconv"
   "strings"
 )
 
@@ -15,21 +14,23 @@ import (
 func main() {
   scanner := bufio.NewScanner(os.Stdin);
   scanner.Scan();
-  word_counts := strings.Split(scanner.Text(), " "); // first is magazine word count | second is ransom note word count
-  m_word_count, _ := strconv.Atoi(word_counts[0]);
-  r_word_count, _ := strconv.Atoi(word_counts[1]);
 
   scanner.Scan();
   magazine_words := strings.Split(scanner.Text(), " ");
-
   scanner.Scan();
   ransom_words := strings.Split(scanner.Text(), " ");
 
-  if (r_word_count > m_word_count) {
-    fmt.Println("No");
-    return
+  var magazine_map = make(map[string]int);
+
+  for _, value := range(magazine_words) {
+    magazine_map[value]++;
   }
 
-  // fmt.Println(magazine_words);
-  // fmt.Println(ransom_words);
+  for _, value := range(ransom_words) {
+    if magazine_map[value]--; magazine_map[value] < 0 {
+      fmt.Println("No");
+      return;
+    }
+  }
+  fmt.Println("Yes");
 }
